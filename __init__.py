@@ -17,12 +17,12 @@ $Id$
 """
 __docformat__ = "reStructuredText"
 
-from zope.publisher.interfaces.browser import ILayer, IDefaultLayer
+from zope.publisher.interfaces.browser import ILayer, IDefaultBrowserLayer
 
 class rotterdam(ILayer):
     """The `rotterdam` layer."""
 
-class Rotterdam(rotterdam, IDefaultLayer):
+class Rotterdam(rotterdam, IDefaultBrowserLayer):
     """The `Rotterdam` skin.
 
     It is available via `++skin++zope.app.rotterdam.Rotterdam`.
