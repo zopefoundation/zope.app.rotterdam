@@ -2,10 +2,14 @@
 CHANGES
 =======
 
-3.5.4 (unreleased)
+4.0.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Remove test dependency on ``zope.app.zcmlfiles``,
+  ``zope.app.testing`` and several others.
+- The ``zope.app.form`` dependency has been replaced with
+  ``zope.formlib``.
+- Add support for PyPy, Python 3.4, 3.5 and 3.6.
 
 
 3.5.3 (2012-01-23)

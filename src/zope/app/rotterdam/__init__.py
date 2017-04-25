@@ -29,6 +29,6 @@ class Rotterdam(rotterdam, IDefaultBrowserLayer):
 # BBB 2006/02/18, to be removed after 12 months
 try:
     import zope.app.skins
-    zope.app.skins.set('Rotterdam', Rotterdam)
+    zope.app.skins.set('Rotterdam', Rotterdam) # pragma: no cover
 except ImportError:
     pass

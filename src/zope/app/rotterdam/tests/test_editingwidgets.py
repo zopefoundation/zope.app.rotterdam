@@ -14,6 +14,13 @@
 """Tests for zope.app.rotterdam.editingwidgets.
 """
 import doctest
+from zope.testing import renormalizing
 
+import re
+checker = renormalizing.RENormalizing([
+    (re.compile("u('.*?')"), r"\1"),
+    (re.compile('u(".*?")'), r"\1"),
+])
 def test_suite():
-    return doctest.DocTestSuite("zope.app.rotterdam.editingwidgets")
+    return doctest.DocTestSuite("zope.app.rotterdam.editingwidgets",
+                                checker=checker)
