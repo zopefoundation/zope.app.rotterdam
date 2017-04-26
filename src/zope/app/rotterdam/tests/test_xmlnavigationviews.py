@@ -46,15 +46,13 @@ def browserView(for_, name, factory, layer=IDefaultBrowserLayer,
 
 
 stypes = list, tuple
-def provideAdapter(required, provided, factory, name='', with_=(), **kw):
-    if with_ is None and kw.has_key('with'): # pragma: no cover
-        with_ = kw['with']
-    if isinstance(factory, (list, tuple)): # pragma: no cover
-        raise ValueError("Factory cannot be a list or tuple")
+def provideAdapter(required, provided, factory, name='', using=None, **kw):
+    assert not isinstance(factory, stypes), "Factory cannot be a list or tuple"
+
     gsm = zope.component.getGlobalSiteManager()
 
-    if with_:
-        required = (required, ) + tuple(with_)
+    if using:
+        required = (required, ) + tuple(using)
     assert isinstance(required, stypes)
 
     gsm.registerAdapter(factory, required, provided, name, event=False)
