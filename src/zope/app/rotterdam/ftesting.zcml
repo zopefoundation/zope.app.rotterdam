@@ -19,7 +19,6 @@
   <include package="zope.browsermenu" file="meta.zcml" />
   <include package="zope.securitypolicy" file="meta.zcml" />
 
-
   <include package="zope.annotation" />
   <include package="zope.browsermenu" />
   <include package="zope.browserresource" />
@@ -79,8 +78,6 @@
       add="zope.ManageContent"
       />
 
-
-
   <!-- Application setup -->
 
   <securityPolicy
@@ -111,9 +108,5 @@
       login="mgr"
       password="mgrpw" />
   <grant role="zope.Manager" principal="zope.mgr" />
-
-  <class class="zope.site.folder.Folder">
-	<allow attributes="items __getitem__ get __contains__ __setitem__" />
-  </class>
 
 </configure>
