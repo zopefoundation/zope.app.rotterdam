@@ -15,14 +15,14 @@
 """
 __docformat__ = 'restructuredtext'
 
-from zope.interface import implements
+from zope.interface import implementer
 
-from zope.app.form.interfaces import IInputWidget
-from zope.app.form.browser import TextAreaWidget
-from zope.app.form.browser.widget import renderElement, escape
+from zope.formlib.interfaces import IInputWidget
+from zope.formlib.widgets import TextAreaWidget
+from zope.formlib.widget import renderElement, escape
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 
-
+@implementer(IInputWidget)
 class SimpleEditingWidget(TextAreaWidget):
     """Improved textarea editing, with async saving using JavaScript.
 
@@ -43,7 +43,7 @@ class SimpleEditingWidget(TextAreaWidget):
     >>> def normalize(s):
     ...   return '\\n  '.join(filter(None, s.split(' ')))
 
-    >>> print normalize( widget() )
+    >>> print(normalize( widget() ))
     <textarea
       cols="60"
       id="field.foo"
@@ -52,7 +52,7 @@ class SimpleEditingWidget(TextAreaWidget):
       >Hello\r
     world!</textarea>
 
-    >>> print normalize( widget.hidden() )
+    >>> print(normalize( widget.hidden() ))
     <input
       class="hiddenType"
       id="field.foo"
@@ -64,7 +64,7 @@ class SimpleEditingWidget(TextAreaWidget):
     Calling `setRenderedValue` will change what gets output:
 
     >>> widget.setRenderedValue("Hey\\ndude!")
-    >>> print normalize( widget() )
+    >>> print(normalize( widget() ))
     <textarea
       cols="60"
       id="field.foo"
@@ -82,7 +82,7 @@ class SimpleEditingWidget(TextAreaWidget):
     >>> widget.getInputValue()
     u'<h1>&copy;</h1>'
 
-    >>> print normalize( widget() )
+    >>> print(normalize( widget() ))
     <textarea
       cols="60"
       id="field.foo"
@@ -91,7 +91,6 @@ class SimpleEditingWidget(TextAreaWidget):
       >&lt;h1&gt;&amp;copy;&lt;/h1&gt;</textarea>
     """
 
-    implements(IInputWidget)
 
     default = ""
     width = 60
@@ -102,7 +101,7 @@ class SimpleEditingWidget(TextAreaWidget):
     rowFragment = ViewPageTemplateFile("simpleeditingrowfragment.pt")
 
     def _toFieldValue(self, value):
-        if self.context.min_length and not value:
+        if self.context.min_length and not value: # pragma: no cover
             return None
         return super(SimpleEditingWidget, self)._toFieldValue(value)
 
@@ -117,6 +116,6 @@ class SimpleEditingWidget(TextAreaWidget):
                              contents=escape(self._getFormValue()),
                              extra=self.extra)
 
-    def contents(self):
+    def contents(self): # pragma: no cover
         """Make the contents available to the template"""
         return self._getFormData()

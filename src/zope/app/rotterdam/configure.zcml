@@ -151,7 +151,7 @@
 
   <browser:view
       for="zope.schema.interfaces.ISourceText"
-      provides="zope.app.form.interfaces.IInputWidget"
+      provides="zope.formlib.interfaces.IInputWidget"
       class=".editingwidgets.SimpleEditingWidget"
       permission="zope.Public"
       layer="zope.app.rotterdam.rotterdam"

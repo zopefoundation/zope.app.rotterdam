@@ -16,9 +16,59 @@
 
 __docformat__ = "reStructuredText"
 
-import os
-from zope.app.testing.functional import ZCMLLayer
 
-RotterdamLayer = ZCMLLayer(
-    os.path.join(os.path.split(__file__)[0], 'ftesting.zcml'),
-    __name__, 'RotterdamLayer', allow_teardown=True)
+import unittest
+
+from webtest import TestApp
+
+from zope.app.wsgi.testlayer import BrowserLayer
+
+from zope.publisher.browser import BrowserView
+from zope.security.proxy import removeSecurityProxy
+from zope.site.site import LocalSiteManager
+
+
+import zope.app.rotterdam
+import zope.component
+import zope.component.interfaces
+
+
+RotterdamLayer = BrowserLayer(
+    zope.app.rotterdam,
+    allowTearDown=True)
+
+
+class BrowserTestCase(unittest.TestCase):
+
+    layer = RotterdamLayer
+
+    def setUp(self):
+        super(BrowserTestCase, self).setUp()
+        self._testapp = TestApp(self.layer.make_wsgi_app())
+
+    def publish(self, path, basic=None, form=None, headers=None):
+        assert basic
+        self._testapp.authorization = ('Basic', tuple(basic.split(':')))
+
+        env = {'wsgi.handleErrors': False}
+        if form:
+            response = self._testapp.post(path, params=form,
+                                          extra_environ=env, headers=headers)
+        else:
+            response = self._testapp.get(path, extra_environ=env, headers=headers)
+        return response
+
+class MakeSite(BrowserView):
+    # copied from zope.app.component to break the circular dependency
+
+    def addSiteManager(self):
+        assert not zope.component.interfaces.ISite.providedBy(self.context)
+
+        # We don't want to store security proxies (we can't,
+        # actually), so we have to remove proxies here before passing
+        # the context to the SiteManager.
+        bare = removeSecurityProxy(self.context)
+        sm = LocalSiteManager(bare)
+        self.context.setSiteManager(sm)
+        self.request.response.redirect(
+            "++etc++site/@@SelectedManagementView.html")

@@ -13,17 +13,16 @@
 ##############################################################################
 """Rotterdam utilities tests
 """
+import codecs
 import os
-import zope.app.rotterdam.tests
+import os.path
 
-dir = os.path.dirname(zope.app.rotterdam.tests.__file__)
-input_dir = os.path.join(dir, 'input')
-output_dir = os.path.join(dir, 'output')
+here = os.path.dirname(__file__)
+input_dir = os.path.join(here, 'input')
+output_dir = os.path.join(here, 'output')
 
-def read_input(filename):
-    filename = os.path.join(input_dir, filename)
-    return open(filename, 'r').read().decode("utf-8")
 
 def read_output(filename):
     filename = os.path.join(output_dir, filename)
-    return open(filename, 'r').read().decode("utf-8")
+    with codecs.open(filename, 'r', 'utf-8') as f:
+        return f.read()
