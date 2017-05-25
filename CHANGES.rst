@@ -5,7 +5,10 @@ CHANGES
 4.0.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Remove long-deprecated <browser:layer> configuration which was hidden
+  behind a ``have deprecatedlayers`` condition. That directive simply
+  doesn't exist any longer and defining that feature would cause an
+  "Unknown directive" ConfigurationError.
 
 
 4.0.0 (2017-04-27)
