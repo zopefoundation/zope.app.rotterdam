@@ -51,7 +51,7 @@ tests_require = [
 ]
 
 setup(name='zope.app.rotterdam',
-      version='4.0.1',
+      version='4.0.2.dev0',
       author='Zope Corporation and Contributors',
       author_email='zope-dev@zope.org',
       description='Rotterdam -- A Zope 3 ZMI Skin',
