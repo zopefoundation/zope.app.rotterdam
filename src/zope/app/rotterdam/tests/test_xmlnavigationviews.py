@@ -15,6 +15,11 @@
 """XML Navigation Tree Tests
 """
 
+from zope.traversing.interfaces import ITraversable
+from zope.site.folder import rootFolder
+from zope.container.traversal import ContainerTraversable
+from zope.container.interfaces import ISimpleReadContainer
+import zope.component.interfaces
 import unittest
 
 from zope.interface import implementer
@@ -46,6 +51,8 @@ def browserView(for_, name, factory, layer=IDefaultBrowserLayer,
 
 
 stypes = list, tuple
+
+
 def provideAdapter(required, provided, factory, name='', using=None, **kw):
     assert not isinstance(factory, stypes), "Factory cannot be a list or tuple"
 
@@ -61,13 +68,14 @@ def provideAdapter(required, provided, factory, name='', using=None, **kw):
 class File(object):
     pass
 
+
 class Place(object):
 
     def __init__(self, path):
         self.path = path
 
     def __get__(self, inst, cls=None):
-        if inst is None: # pragma: no cover
+        if inst is None:  # pragma: no cover
             return self
 
         # Use __dict__ directly to avoid infinite recursion
@@ -75,7 +83,6 @@ class Place(object):
 
         return traverse(root, self.path)
 
-from zope.site.folder import rootFolder
 
 def buildSampleFolderTree():
     # set up a reasonably complex folder structure
@@ -108,16 +115,14 @@ def buildSampleFolderTree():
          u"\N{CYRILLIC SMALL LETTER PE}"
          u"\N{CYRILLIC SMALL LETTER KA}"
          u"\N{CYRILLIC SMALL LETTER A}3"][
-         u"\N{CYRILLIC SMALL LETTER PE}"
-         u"\N{CYRILLIC SMALL LETTER A}"
-         u"\N{CYRILLIC SMALL LETTER PE}"
-         u"\N{CYRILLIC SMALL LETTER KA}"
-         u"\N{CYRILLIC SMALL LETTER A}3_1"] = Folder()
+        u"\N{CYRILLIC SMALL LETTER PE}"
+        u"\N{CYRILLIC SMALL LETTER A}"
+        u"\N{CYRILLIC SMALL LETTER PE}"
+        u"\N{CYRILLIC SMALL LETTER KA}"
+        u"\N{CYRILLIC SMALL LETTER A}3_1"] = Folder()
 
     return root
 
-
-import zope.component.interfaces
 
 def createSiteManager(folder, setsite=False):
     if not zope.component.interfaces.ISite.providedBy(folder):
@@ -126,46 +131,45 @@ def createSiteManager(folder, setsite=False):
         zope.component.hooks.setSite(folder)
     return zope.traversing.api.traverse(folder, "++etc++site")
 
-from zope.traversing.interfaces import ITraversable
-from zope.container.interfaces import ISimpleReadContainer
-from zope.container.traversal import ContainerTraversable
+
 def setUpTraversal():
     from zope.traversing.testing import setUp
     setUp()
     zope.component.provideAdapter(ContainerTraversable,
                                   (ISimpleReadContainer,), ITraversable)
 
+
 class PlacefulSetup(PlacelessSetup):
 
     # Places :)
-    rootFolder  = Place(u'')
+    rootFolder = Place(u'')
 
-    folder1     = Place(u'folder1')
-    folder1_1   = Place(u'folder1/folder1_1')
+    folder1 = Place(u'folder1')
+    folder1_1 = Place(u'folder1/folder1_1')
     folder1_1_1 = Place(u'folder1/folder1_1/folder1_1_1')
     folder1_1_2 = Place(u'folder1/folder1_2/folder1_1_2')
-    folder1_2   = Place(u'folder1/folder1_2')
+    folder1_2 = Place(u'folder1/folder1_2')
     folder1_2_1 = Place(u'folder1/folder1_2/folder1_2_1')
 
-    folder2     = Place(u'folder2')
-    folder2_1   = Place(u'folder2/folder2_1')
+    folder2 = Place(u'folder2')
+    folder2_1 = Place(u'folder2/folder2_1')
     folder2_1_1 = Place(u'folder2/folder2_1/folder2_1_1')
 
-    folder3     = Place(u"\N{CYRILLIC SMALL LETTER PE}"
-                        u"\N{CYRILLIC SMALL LETTER A}"
-                        u"\N{CYRILLIC SMALL LETTER PE}"
-                        u"\N{CYRILLIC SMALL LETTER KA}"
-                        u"\N{CYRILLIC SMALL LETTER A}3")
-    folder3_1   = Place(u"\N{CYRILLIC SMALL LETTER PE}"
-                        u"\N{CYRILLIC SMALL LETTER A}"
-                        u"\N{CYRILLIC SMALL LETTER PE}"
-                        u"\N{CYRILLIC SMALL LETTER KA}"
-                        u"\N{CYRILLIC SMALL LETTER A}3/"
-                        u"\N{CYRILLIC SMALL LETTER PE}"
-                        u"\N{CYRILLIC SMALL LETTER A}"
-                        u"\N{CYRILLIC SMALL LETTER PE}"
-                        u"\N{CYRILLIC SMALL LETTER KA}"
-                        u"\N{CYRILLIC SMALL LETTER A}3_1")
+    folder3 = Place(u"\N{CYRILLIC SMALL LETTER PE}"
+                    u"\N{CYRILLIC SMALL LETTER A}"
+                    u"\N{CYRILLIC SMALL LETTER PE}"
+                    u"\N{CYRILLIC SMALL LETTER KA}"
+                    u"\N{CYRILLIC SMALL LETTER A}3")
+    folder3_1 = Place(u"\N{CYRILLIC SMALL LETTER PE}"
+                      u"\N{CYRILLIC SMALL LETTER A}"
+                      u"\N{CYRILLIC SMALL LETTER PE}"
+                      u"\N{CYRILLIC SMALL LETTER KA}"
+                      u"\N{CYRILLIC SMALL LETTER A}3/"
+                      u"\N{CYRILLIC SMALL LETTER PE}"
+                      u"\N{CYRILLIC SMALL LETTER A}"
+                      u"\N{CYRILLIC SMALL LETTER PE}"
+                      u"\N{CYRILLIC SMALL LETTER KA}"
+                      u"\N{CYRILLIC SMALL LETTER A}3_1")
 
     def setUp(self, folders=False, site=False):
         PlacelessSetup.setUp(self)
@@ -183,7 +187,6 @@ class PlacefulSetup(PlacelessSetup):
         return createSiteManager(folder, True)
 
 
-
 class TestXmlObject(PlacefulSetup, unittest.TestCase):
 
     layer = RotterdamLayer
@@ -196,7 +199,6 @@ class TestXmlObject(PlacefulSetup, unittest.TestCase):
         s1 = normalize_xml(s1)
         s2 = normalize_xml(s2)
         self.assertEqual(s1, s2)
-
 
     def testXMLTreeViews(self):
         rcxov = ReadContainerXmlObjectView
@@ -221,8 +223,10 @@ class TestXmlObject(PlacefulSetup, unittest.TestCase):
         class ReadContainerView(ReadContainerXmlObjectView):
             def browserDefault(self, request):
                 raise NotImplementedError()
+
             def publishTraverse(self, request, name):
                 raise NotImplementedError()
+
             def __call__(self):
                 return self.singleBranchTree()
 
@@ -258,7 +262,7 @@ class TestXmlObject(PlacefulSetup, unittest.TestCase):
 
         # test virtual host root
         vh = request.getVirtualHostRoot()
-        self.assertEquals(vh, subsite)
+        self.assertEqual(vh, subsite)
 
         rcxov = ReadContainerXmlObjectView
         treeView = rcxov(subsite, request).singleBranchTree
@@ -275,6 +279,3 @@ class TestXmlObject(PlacefulSetup, unittest.TestCase):
 
 def test_suite():
     return unittest.defaultTestLoader.loadTestsFromName(__name__)
-
-if __name__ == '__main__':
-    unittest.main()

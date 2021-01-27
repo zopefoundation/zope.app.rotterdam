@@ -21,6 +21,8 @@ checker = renormalizing.RENormalizing([
     (re.compile("u('.*?')"), r"\1"),
     (re.compile('u(".*?")'), r"\1"),
 ])
+
+
 def test_suite():
     return doctest.DocTestSuite("zope.app.rotterdam.editingwidgets",
                                 checker=checker)
