@@ -32,16 +32,20 @@ from zope.app.rotterdam.i18n import ZopeMessageFactory as _
 titleTemplate = _('Contains $${num} item(s)')
 loadingMsg = _('Loading...')
 
+
 def setNoCacheHeaders(response):
     """Ensure that the tree isn't cached"""
     response.setHeader('Pragma', 'no-cache')
     response.setHeader('Cache-Control', 'no-cache')
     response.setHeader('Expires',
-                       formatdate(time.time() - 7 * 86400)) # 7 days ago
+                       formatdate(time.time() - 7 * 86400))  # 7 days ago
+
+
 try:
     text_type = unicode
 except NameError:
     text_type = str
+
 
 def _quoteattr_text(obj):
     if isinstance(obj, bytes):
@@ -50,15 +54,18 @@ def _quoteattr_text(obj):
         obj = text_type(obj)
     return quoteattr(obj)
 
+
 def xmlEscape(format, *args):
     quotedArgs = [_quoteattr_text(arg) for arg in args]
     return format % tuple(quotedArgs)
+
 
 def xmlEscapeWithCData(format, *args):
     cData = args[-1]
     quotedArgs = [_quoteattr_text(arg) for arg in args[:-1]]
     quotedArgsWithCData = quotedArgs + [cData]
     return format % tuple(quotedArgsWithCData)
+
 
 def getParentsFromContextToObject(context, obj):
     """Returns a list starting with the given context's parent followed by
@@ -76,7 +83,7 @@ def getParentsFromContextToObject(context, obj):
         if sameProxiedObjects(w, obj):
             parents.append(w)
             break
-        if w is None: # pragma: no cover
+        if w is None:  # pragma: no cover
             break
 
         parents.append(w)
@@ -89,7 +96,6 @@ class ReadContainerXmlObjectView(BrowserView):
 
     __used_for__ = IReadContainer
 
-
     def getIconUrl(self, item):
         icon = queryMultiAdapter((item, self.request), name='zmi_icon')
         return icon.url() if icon else ''
@@ -99,7 +105,7 @@ class ReadContainerXmlObjectView(BrowserView):
         if IReadContainer.providedBy(item):
             try:
                 res = len(item)
-            except (Unauthorized, Forbidden): # pragma: no cover
+            except (Unauthorized, Forbidden):  # pragma: no cover
                 pass
         return res
 
@@ -136,14 +142,13 @@ class ReadContainerXmlObjectView(BrowserView):
 
         return u' '.join(result)
 
-
     def children(self):
         """ Get children """
         container = self.context
         self.request.response.setHeader('Content-Type', 'text/xml')
         setNoCacheHeaders(self.request.response)
         res = (u'<?xml version="1.0" ?><children> %s </children>'
-                % self.children_utility(container))
+               % self.children_utility(container))
         return res
 
     def singleBranchTree(self, root=''):
@@ -160,11 +165,11 @@ class ReadContainerXmlObjectView(BrowserView):
         vh = self.request.getVirtualHostRoot()
         if vh:
             vhrootView = getMultiAdapter(
-                    (vh, self.request), name='absolute_url')
+                (vh, self.request), name='absolute_url')
             baseURL = vhrootView() + '/'
             try:
                 rootName = '[' + vh.__name__ + ']'
-            except: # pragma: no cover
+            except:  # noqa: E722 do not use bare 'except' pragma: no cover
                 # we got the containment root itself as the virtual host
                 # and there is no name.
                 rootName = _('[top]')
@@ -178,13 +183,13 @@ class ReadContainerXmlObjectView(BrowserView):
 
         for item in parents:
             # skip skin if present
-            #if item == oldItem:
+            # if item == oldItem:
             #        continue
             subItems = []
             keys = []
             if IReadContainer.providedBy(item):
                 keys = list(item.keys())
-                if len(keys) >= 1000: # pragma: no cover
+                if len(keys) >= 1000:  # pragma: no cover
                     keys = []
 
             # include the site manager
@@ -218,20 +223,21 @@ class ReadContainerXmlObjectView(BrowserView):
         # do not forget root folder
         iconUrl = self.getIconUrl(oldItem)
         result = xmlEscapeWithCData(
-                  u'<collection name=%s baseURL=%s length=%s '
-                  u'icon_url=%s isroot="">%s</collection>',
-                  rootName, baseURL, len(oldItem), iconUrl, result)
+            u'<collection name=%s baseURL=%s length=%s '
+            u'icon_url=%s isroot="">%s</collection>',
+            rootName, baseURL, len(oldItem), iconUrl, result)
 
         self.request.response.setHeader('Content-Type', 'text/xml')
         setNoCacheHeaders(self.request.response)
         title = translate(titleTemplate,
                           context=self.request, default=titleTemplate)
         loading = translate(loadingMsg,
-                          context=self.request, default=loadingMsg)
+                            context=self.request, default=loadingMsg)
         return xmlEscapeWithCData(
-                u'<?xml version="1.0" ?>'
-                u'<children title_tpl=%s loading_msg=%s>%s</children>',
-                title, loading, result)
+            u'<?xml version="1.0" ?>'
+            u'<children title_tpl=%s loading_msg=%s>%s</children>',
+            title, loading, result)
+
 
 class XmlObjectView(BrowserView):
     """Provide a xml interface for dynamic navigation tree in UI"""
@@ -246,4 +252,4 @@ class XmlObjectView(BrowserView):
                     (parent, self.request), name='singleBranchTree.xml')
                 return view()
 
-            parent = getParent(parent) # pragma: no cover
+            parent = getParent(parent)  # pragma: no cover

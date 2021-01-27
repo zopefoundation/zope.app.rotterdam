@@ -16,16 +16,15 @@
 # When developing and releasing this package, please follow the documented
 # Zope Toolkit policies as described by this documentation.
 ##############################################################################
-"""Setup for zope.app.rotterdam package
-
-$Id$
-"""
+"""Setup for zope.app.rotterdam package."""
 import os
 from setuptools import setup, find_packages
+
 
 def read(*rnames):
     with open(os.path.join(os.path.dirname(__file__), *rnames)) as f:
         return f.read()
+
 
 tests_require = [
     'zope.app.appsetup',
@@ -51,15 +50,15 @@ tests_require = [
 ]
 
 setup(name='zope.app.rotterdam',
-      version='4.0.2.dev0',
-      author='Zope Corporation and Contributors',
+      version='4.1.0.dev0',
+      author='Zope Foundation and Contributors',
       author_email='zope-dev@zope.org',
       description='Rotterdam -- A Zope 3 ZMI Skin',
       long_description=(
           read('README.rst')
           + '\n\n' +
           read('CHANGES.rst')
-          ),
+      ),
       keywords="zope3 zmi skin rotterdam",
       classifiers=[
           'Development Status :: 5 - Production/Stable',
@@ -67,10 +66,14 @@ setup(name='zope.app.rotterdam',
           'Intended Audience :: Developers',
           'License :: OSI Approved :: Zope Public License',
           'Programming Language :: Python',
+          'Programming Language :: Python :: 2',
           'Programming Language :: Python :: 2.7',
-          'Programming Language :: Python :: 3.4',
+          'Programming Language :: Python :: 3',
           'Programming Language :: Python :: 3.5',
           'Programming Language :: Python :: 3.6',
+          'Programming Language :: Python :: 3.7',
+          'Programming Language :: Python :: 3.8',
+          'Programming Language :: Python :: 3.9',
           'Programming Language :: Python :: Implementation :: CPython',
           'Programming Language :: Python :: Implementation :: PyPy',
           'Natural Language :: English',
@@ -78,10 +81,10 @@ setup(name='zope.app.rotterdam',
           'Topic :: Internet :: WWW/HTTP',
           'Framework :: Zope :: 3',
       ],
-      url='http://pypi.python.org/pypi/zope.app.rotterdam',
+      url='https://github.com/zopefoundation/zope.app.rotterdam',
       license='ZPL 2.1',
       packages=find_packages('src'),
-      package_dir = {'': 'src'},
+      package_dir={'': 'src'},
       namespace_packages=['zope', 'zope.app'],
       extras_require={
           'test': tests_require,
@@ -101,6 +104,6 @@ setup(name='zope.app.rotterdam',
           'zope.security',
           'zope.traversing',
       ],
-      include_package_data = True,
-      zip_safe = False,
-)
+      include_package_data=True,
+      zip_safe=False,
+      )

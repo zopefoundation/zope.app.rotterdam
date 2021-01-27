@@ -22,6 +22,7 @@ from zope.formlib.widgets import TextAreaWidget
 from zope.formlib.widget import renderElement, escape
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
 
+
 @implementer(IInputWidget)
 class SimpleEditingWidget(TextAreaWidget):
     """Improved textarea editing, with async saving using JavaScript.
@@ -91,17 +92,16 @@ class SimpleEditingWidget(TextAreaWidget):
       >&lt;h1&gt;&amp;copy;&lt;/h1&gt;</textarea>
     """
 
-
     default = ""
     width = 60
     height = 15
-    extra=""
-    style="width: 98%; font-family: monospace;"
+    extra = ""
+    style = "width: 98%; font-family: monospace;"
     rowTemplate = ViewPageTemplateFile("simpleeditingrow.pt")
     rowFragment = ViewPageTemplateFile("simpleeditingrowfragment.pt")
 
     def _toFieldValue(self, value):
-        if self.context.min_length and not value: # pragma: no cover
+        if self.context.min_length and not value:  # pragma: no cover
             return None
         return super(SimpleEditingWidget, self)._toFieldValue(value)
 
@@ -116,6 +116,6 @@ class SimpleEditingWidget(TextAreaWidget):
                              contents=escape(self._getFormValue()),
                              extra=self.extra)
 
-    def contents(self): # pragma: no cover
+    def contents(self):  # pragma: no cover
         """Make the contents available to the template"""
         return self._getFormData()

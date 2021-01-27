@@ -18,36 +18,37 @@ from xml.dom import minidom
 
 from zope.app.rotterdam.testing import BrowserTestCase
 
+
 class TestNavTree(BrowserTestCase):
 
     def test_navtree(self):
         # Add some folders
         response = self.publish("/+/action.html", basic='mgr:mgrpw',
-                                form={'type_name':u'zope.app.content.Folder',
-                                      'id':u'First'})
+                                form={'type_name': u'zope.app.content.Folder',
+                                      'id': u'First'})
         self.assertEqual(response.status_int, 302)
         response = self.publish("/+/action.html", basic='mgr:mgrpw',
-                                form={'type_name':u'zope.app.content.Folder',
-                                      'id':u'S&econd'})
+                                form={'type_name': u'zope.app.content.Folder',
+                                      'id': u'S&econd'})
         self.assertEqual(response.status_int, 302)
         response = self.publish("/+/action.html", basic='mgr:mgrpw',
-                                form={'type_name':u'zope.app.content.Folder',
-                                      'id':u'Third'})
+                                form={'type_name': u'zope.app.content.Folder',
+                                      'id': u'Third'})
         self.assertEqual(response.status_int, 302)
         response = self.publish("/First/+/action.html", basic='mgr:mgrpw',
-                                form={'type_name':u'zope.app.content.Folder',
-                                      'id':u'Firsts"Folder'})
+                                form={'type_name': u'zope.app.content.Folder',
+                                      'id': u'Firsts"Folder'})
         self.assertEqual(response.status_int, 302)
         response = self.publish("/First/+/action.html", basic='mgr:mgrpw',
-                                form={'type_name':u'zope.app.content.Folder',
-                                      'id':u'somesite'})
+                                form={'type_name': u'zope.app.content.Folder',
+                                      'id': u'somesite'})
         self.assertEqual(response.status_int, 302)
 
-        #add a site manager This will break when site adding is fixed
+        # add a site manager This will break when site adding is fixed
         # see above for examples to fix by filling out a form
         # when further action is required to make a site
         response = self.publish("/First/somesite/addSiteManager.html",
-                                                basic='mgr:mgrpw')
+                                basic='mgr:mgrpw')
         self.assertEqual(response.status_int, 302)
         # /First/FirstsFolder/@@singleBranchTree.xml
         # contains those 4 elements above
@@ -55,8 +56,8 @@ class TestNavTree(BrowserTestCase):
         # contains First Second and Third
 
         response = self.publish(
-                      "/First/somesite/++etc++site/@@singleBranchTree.xml",
-                                                basic='mgr:mgrpw')
+            "/First/somesite/++etc++site/@@singleBranchTree.xml",
+            basic='mgr:mgrpw')
         self.assertEqual(response.status_int, 200)
 
         minidom.parseString(response.body)
@@ -67,13 +68,10 @@ class TestNavTree(BrowserTestCase):
         minidom.parseString(response.body)
 
         response = self.publish("/First/+/action.html", basic='mgr:mgrpw',
-                                form={'type_name':u'zope.app.content.Folder',
-                                      'id':u'Firsts2ndFolder'})
+                                form={'type_name': u'zope.app.content.Folder',
+                                      'id': u'Firsts2ndFolder'})
         self.assertEqual(response.status_int, 302)
 
 
 def test_suite():
     return unittest.defaultTestLoader.loadTestsFromName(__name__)
-
-if __name__ == '__main__':
-    unittest.main(defaultTest='test_suite')
