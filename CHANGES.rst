@@ -9,6 +9,8 @@ CHANGES
 
 - Drop support for Python 3.4.
 
+- Drop support for ``zope.app.skins`` which is deprecated since 2006.
+
 
 4.0.1 (2017-05-25)
 ------------------
