@@ -15,32 +15,29 @@
 """XML Navigation Tree Tests
 """
 
-from zope.traversing.interfaces import ITraversable
-from zope.site.folder import rootFolder
-from zope.container.traversal import ContainerTraversable
-from zope.container.interfaces import ISimpleReadContainer
-import zope.component.interfaces
 import unittest
 
+import zope.component
+import zope.component.interfaces
+from zope.component.testing import PlacelessSetup
+from zope.container.interfaces import IReadContainer
+from zope.container.interfaces import ISimpleReadContainer
+from zope.container.traversal import ContainerTraversable
 from zope.interface import implementer
 from zope.pagetemplate.tests.util import normalize_xml
 from zope.publisher.browser import TestRequest
 from zope.publisher.interfaces.browser import IBrowserPublisher
-
-from zope.traversing.api import traverse
-
-from zope.container.interfaces import IReadContainer
-from zope.site.site import LocalSiteManager
-from zope.component.testing import PlacelessSetup
+from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 from zope.site.folder import Folder
+from zope.site.folder import rootFolder
+from zope.site.site import LocalSiteManager
+from zope.traversing.api import traverse
+from zope.traversing.interfaces import ITraversable
 
-from zope.app.rotterdam.tests import util
 from zope.app.rotterdam.testing import RotterdamLayer
+from zope.app.rotterdam.tests import util
 from zope.app.rotterdam.xmlobject import ReadContainerXmlObjectView
 from zope.app.rotterdam.xmlobject import XmlObjectView
-
-import zope.component
-from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
 
 def browserView(for_, name, factory, layer=IDefaultBrowserLayer,

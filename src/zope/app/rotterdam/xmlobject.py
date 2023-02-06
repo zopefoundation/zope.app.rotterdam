@@ -14,20 +14,25 @@
 """Support classes for XML-based tree
 """
 
-from email.utils import formatdate
 import time
+from email.utils import formatdate
 from xml.sax.saxutils import quoteattr
 
-from zope.component import getMultiAdapter, queryMultiAdapter
+from zope.component import getMultiAdapter
+from zope.component import queryMultiAdapter
+from zope.container.interfaces import IReadContainer
+from zope.i18n import translate
 from zope.interface import Interface
 from zope.proxy import sameProxiedObjects
-from zope.security.interfaces import Unauthorized, Forbidden
-from zope.i18n import translate
-from zope.traversing.api import getParents, getParent, traverse
 from zope.publisher.browser import BrowserView
+from zope.security.interfaces import Forbidden
+from zope.security.interfaces import Unauthorized
+from zope.traversing.api import getParent
+from zope.traversing.api import getParents
+from zope.traversing.api import traverse
 
-from zope.container.interfaces import IReadContainer
 from zope.app.rotterdam.i18n import ZopeMessageFactory as _
+
 
 titleTemplate = _('Contains $${num} item(s)')
 loadingMsg = _('Loading...')
