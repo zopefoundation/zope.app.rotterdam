@@ -121,11 +121,11 @@ class ReadContainerXmlObjectView(BrowserView):
         keys = list(container.keys())
 
         # include the site manager
-        keys.append(u'++etc++site')
+        keys.append('++etc++site')
 
         # dont get children if we get more than 1000 objects
         if len(keys) >= 1000:
-            keys = [u'++etc++site']
+            keys = ['++etc++site']
 
         for name in keys:
 
@@ -138,21 +138,21 @@ class ReadContainerXmlObjectView(BrowserView):
             item_len = self.getLengthOf(item)
             if item_len >= 0:
                 result.append(xmlEscape(
-                    u'<collection name=%s length=%s icon_url=%s/>',
+                    '<collection name=%s length=%s icon_url=%s/>',
                     name, item_len, iconUrl))
             else:
                 result.append(xmlEscape(
-                    u'<item name=%s icon_url=%s/>',
+                    '<item name=%s icon_url=%s/>',
                     name, iconUrl))
 
-        return u' '.join(result)
+        return ' '.join(result)
 
     def children(self):
         """ Get children """
         container = self.context
         self.request.response.setHeader('Content-Type', 'text/xml')
         setNoCacheHeaders(self.request.response)
-        res = (u'<?xml version="1.0" ?><children> %s </children>'
+        res = ('<?xml version="1.0" ?><children> %s </children>'
                % self.children_utility(container))
         return res
 
@@ -198,7 +198,7 @@ class ReadContainerXmlObjectView(BrowserView):
                     keys = []
 
             # include the site manager
-            keys.append(u'++etc++site')
+            keys.append('++etc++site')
 
             for name in keys:
                 # Only include items we can traverse to
@@ -210,26 +210,26 @@ class ReadContainerXmlObjectView(BrowserView):
                     # with the ++etc++site case
                     if subItem == oldItem:
                         subItems.append(xmlEscapeWithCData(
-                            u'<collection name=%s length=%s '
-                            u'icon_url=%s>%s</collection>',
+                            '<collection name=%s length=%s '
+                            'icon_url=%s>%s</collection>',
                             name, subitem_len, iconUrl, result))
                     else:
                         subItems.append(xmlEscape(
-                            u'<collection name=%s length=%s '
-                            u'icon_url=%s/>',
+                            '<collection name=%s length=%s '
+                            'icon_url=%s/>',
                             name, subitem_len, iconUrl))
                 else:
                     subItems.append(xmlEscape(
-                        u'<item name=%s icon_url=%s />', name, iconUrl))
+                        '<item name=%s icon_url=%s />', name, iconUrl))
 
-            result = u' '.join(subItems)
+            result = ' '.join(subItems)
             oldItem = item
 
         # do not forget root folder
         iconUrl = self.getIconUrl(oldItem)
         result = xmlEscapeWithCData(
-            u'<collection name=%s baseURL=%s length=%s '
-            u'icon_url=%s isroot="">%s</collection>',
+            '<collection name=%s baseURL=%s length=%s '
+            'icon_url=%s isroot="">%s</collection>',
             rootName, baseURL, len(oldItem), iconUrl, result)
 
         self.request.response.setHeader('Content-Type', 'text/xml')
@@ -239,8 +239,8 @@ class ReadContainerXmlObjectView(BrowserView):
         loading = translate(loadingMsg,
                             context=self.request, default=loadingMsg)
         return xmlEscapeWithCData(
-            u'<?xml version="1.0" ?>'
-            u'<children title_tpl=%s loading_msg=%s>%s</children>',
+            '<?xml version="1.0" ?>'
+            '<children title_tpl=%s loading_msg=%s>%s</children>',
             title, loading, result)
 
 

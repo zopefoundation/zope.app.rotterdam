@@ -103,7 +103,7 @@ class SimpleEditingWidget(TextAreaWidget):
     def _toFieldValue(self, value):
         if self.context.min_length and not value:  # pragma: no cover
             return None
-        return super(SimpleEditingWidget, self)._toFieldValue(value)
+        return super()._toFieldValue(value)
 
     def __call__(self):
         return renderElement("textarea",
