@@ -17,6 +17,7 @@ import codecs
 import os
 import os.path
 
+
 here = os.path.dirname(__file__)
 input_dir = os.path.join(here, 'input')
 output_dir = os.path.join(here, 'output')

@@ -19,18 +19,15 @@ __docformat__ = "reStructuredText"
 
 import unittest
 
+import zope.component
+import zope.component.interfaces
 from webtest import TestApp
-
 from zope.app.wsgi.testlayer import BrowserLayer
-
 from zope.publisher.browser import BrowserView
 from zope.security.proxy import removeSecurityProxy
 from zope.site.site import LocalSiteManager
 
-
 import zope.app.rotterdam
-import zope.component
-import zope.component.interfaces
 
 
 RotterdamLayer = BrowserLayer(
@@ -43,7 +40,7 @@ class BrowserTestCase(unittest.TestCase):
     layer = RotterdamLayer
 
     def setUp(self):
-        super(BrowserTestCase, self).setUp()
+        super().setUp()
         self._testapp = TestApp(self.layer.make_wsgi_app())
 
     def publish(self, path, basic=None, form=None, headers=None):

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ##############################################################################
 #
 # Copyright (c) 2001, 2002 Zope Foundation and Contributors.
@@ -15,32 +14,29 @@
 """XML Navigation Tree Tests
 """
 
-from zope.traversing.interfaces import ITraversable
-from zope.site.folder import rootFolder
-from zope.container.traversal import ContainerTraversable
-from zope.container.interfaces import ISimpleReadContainer
-import zope.component.interfaces
 import unittest
 
+import zope.component
+import zope.component.interfaces
+from zope.component.testing import PlacelessSetup
+from zope.container.interfaces import IReadContainer
+from zope.container.interfaces import ISimpleReadContainer
+from zope.container.traversal import ContainerTraversable
 from zope.interface import implementer
 from zope.pagetemplate.tests.util import normalize_xml
 from zope.publisher.browser import TestRequest
 from zope.publisher.interfaces.browser import IBrowserPublisher
-
-from zope.traversing.api import traverse
-
-from zope.container.interfaces import IReadContainer
-from zope.site.site import LocalSiteManager
-from zope.component.testing import PlacelessSetup
+from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 from zope.site.folder import Folder
+from zope.site.folder import rootFolder
+from zope.site.site import LocalSiteManager
+from zope.traversing.api import traverse
+from zope.traversing.interfaces import ITraversable
 
-from zope.app.rotterdam.tests import util
 from zope.app.rotterdam.testing import RotterdamLayer
+from zope.app.rotterdam.tests import util
 from zope.app.rotterdam.xmlobject import ReadContainerXmlObjectView
 from zope.app.rotterdam.xmlobject import XmlObjectView
-
-import zope.component
-from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
 
 def browserView(for_, name, factory, layer=IDefaultBrowserLayer,
@@ -65,11 +61,11 @@ def provideAdapter(required, provided, factory, name='', using=None, **kw):
     gsm.registerAdapter(factory, required, provided, name, event=False)
 
 
-class File(object):
+class File:
     pass
 
 
-class Place(object):
+class Place:
 
     def __init__(self, path):
         self.path = path
@@ -96,30 +92,30 @@ def buildSampleFolderTree():
     # folder1_1_1 folder1_1_2  folder1_2_1  folder2_1_1
 
     root = rootFolder()
-    root[u'folder1'] = Folder()
-    root[u'folder1'][u'folder1_1'] = Folder()
-    root[u'folder1'][u'folder1_1'][u'folder1_1_1'] = Folder()
-    root[u'folder1'][u'folder1_1'][u'folder1_1_2'] = Folder()
-    root[u'folder1'][u'folder1_2'] = Folder()
-    root[u'folder1'][u'folder1_2'][u'folder1_2_1'] = Folder()
-    root[u'folder2'] = Folder()
-    root[u'folder2'][u'folder2_1'] = Folder()
-    root[u'folder2'][u'folder2_1'][u'folder2_1_1'] = Folder()
-    root[u"\N{CYRILLIC SMALL LETTER PE}"
-         u"\N{CYRILLIC SMALL LETTER A}"
-         u"\N{CYRILLIC SMALL LETTER PE}"
-         u"\N{CYRILLIC SMALL LETTER KA}"
-         u"\N{CYRILLIC SMALL LETTER A}3"] = Folder()
-    root[u"\N{CYRILLIC SMALL LETTER PE}"
-         u"\N{CYRILLIC SMALL LETTER A}"
-         u"\N{CYRILLIC SMALL LETTER PE}"
-         u"\N{CYRILLIC SMALL LETTER KA}"
-         u"\N{CYRILLIC SMALL LETTER A}3"][
-        u"\N{CYRILLIC SMALL LETTER PE}"
-        u"\N{CYRILLIC SMALL LETTER A}"
-        u"\N{CYRILLIC SMALL LETTER PE}"
-        u"\N{CYRILLIC SMALL LETTER KA}"
-        u"\N{CYRILLIC SMALL LETTER A}3_1"] = Folder()
+    root['folder1'] = Folder()
+    root['folder1']['folder1_1'] = Folder()
+    root['folder1']['folder1_1']['folder1_1_1'] = Folder()
+    root['folder1']['folder1_1']['folder1_1_2'] = Folder()
+    root['folder1']['folder1_2'] = Folder()
+    root['folder1']['folder1_2']['folder1_2_1'] = Folder()
+    root['folder2'] = Folder()
+    root['folder2']['folder2_1'] = Folder()
+    root['folder2']['folder2_1']['folder2_1_1'] = Folder()
+    root["\N{CYRILLIC SMALL LETTER PE}"
+         "\N{CYRILLIC SMALL LETTER A}"
+         "\N{CYRILLIC SMALL LETTER PE}"
+         "\N{CYRILLIC SMALL LETTER KA}"
+         "\N{CYRILLIC SMALL LETTER A}3"] = Folder()
+    root["\N{CYRILLIC SMALL LETTER PE}"
+         "\N{CYRILLIC SMALL LETTER A}"
+         "\N{CYRILLIC SMALL LETTER PE}"
+         "\N{CYRILLIC SMALL LETTER KA}"
+         "\N{CYRILLIC SMALL LETTER A}3"][
+        "\N{CYRILLIC SMALL LETTER PE}"
+        "\N{CYRILLIC SMALL LETTER A}"
+        "\N{CYRILLIC SMALL LETTER PE}"
+        "\N{CYRILLIC SMALL LETTER KA}"
+        "\N{CYRILLIC SMALL LETTER A}3_1"] = Folder()
 
     return root
 
@@ -142,34 +138,34 @@ def setUpTraversal():
 class PlacefulSetup(PlacelessSetup):
 
     # Places :)
-    rootFolder = Place(u'')
+    rootFolder = Place('')
 
-    folder1 = Place(u'folder1')
-    folder1_1 = Place(u'folder1/folder1_1')
-    folder1_1_1 = Place(u'folder1/folder1_1/folder1_1_1')
-    folder1_1_2 = Place(u'folder1/folder1_2/folder1_1_2')
-    folder1_2 = Place(u'folder1/folder1_2')
-    folder1_2_1 = Place(u'folder1/folder1_2/folder1_2_1')
+    folder1 = Place('folder1')
+    folder1_1 = Place('folder1/folder1_1')
+    folder1_1_1 = Place('folder1/folder1_1/folder1_1_1')
+    folder1_1_2 = Place('folder1/folder1_2/folder1_1_2')
+    folder1_2 = Place('folder1/folder1_2')
+    folder1_2_1 = Place('folder1/folder1_2/folder1_2_1')
 
-    folder2 = Place(u'folder2')
-    folder2_1 = Place(u'folder2/folder2_1')
-    folder2_1_1 = Place(u'folder2/folder2_1/folder2_1_1')
+    folder2 = Place('folder2')
+    folder2_1 = Place('folder2/folder2_1')
+    folder2_1_1 = Place('folder2/folder2_1/folder2_1_1')
 
-    folder3 = Place(u"\N{CYRILLIC SMALL LETTER PE}"
-                    u"\N{CYRILLIC SMALL LETTER A}"
-                    u"\N{CYRILLIC SMALL LETTER PE}"
-                    u"\N{CYRILLIC SMALL LETTER KA}"
-                    u"\N{CYRILLIC SMALL LETTER A}3")
-    folder3_1 = Place(u"\N{CYRILLIC SMALL LETTER PE}"
-                      u"\N{CYRILLIC SMALL LETTER A}"
-                      u"\N{CYRILLIC SMALL LETTER PE}"
-                      u"\N{CYRILLIC SMALL LETTER KA}"
-                      u"\N{CYRILLIC SMALL LETTER A}3/"
-                      u"\N{CYRILLIC SMALL LETTER PE}"
-                      u"\N{CYRILLIC SMALL LETTER A}"
-                      u"\N{CYRILLIC SMALL LETTER PE}"
-                      u"\N{CYRILLIC SMALL LETTER KA}"
-                      u"\N{CYRILLIC SMALL LETTER A}3_1")
+    folder3 = Place("\N{CYRILLIC SMALL LETTER PE}"
+                    "\N{CYRILLIC SMALL LETTER A}"
+                    "\N{CYRILLIC SMALL LETTER PE}"
+                    "\N{CYRILLIC SMALL LETTER KA}"
+                    "\N{CYRILLIC SMALL LETTER A}3")
+    folder3_1 = Place("\N{CYRILLIC SMALL LETTER PE}"
+                      "\N{CYRILLIC SMALL LETTER A}"
+                      "\N{CYRILLIC SMALL LETTER PE}"
+                      "\N{CYRILLIC SMALL LETTER KA}"
+                      "\N{CYRILLIC SMALL LETTER A}3/"
+                      "\N{CYRILLIC SMALL LETTER PE}"
+                      "\N{CYRILLIC SMALL LETTER A}"
+                      "\N{CYRILLIC SMALL LETTER PE}"
+                      "\N{CYRILLIC SMALL LETTER KA}"
+                      "\N{CYRILLIC SMALL LETTER A}3_1")
 
     def setUp(self, folders=False, site=False):
         PlacelessSetup.setUp(self)

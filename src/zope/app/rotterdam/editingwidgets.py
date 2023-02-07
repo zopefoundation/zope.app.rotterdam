@@ -15,12 +15,12 @@
 """
 __docformat__ = 'restructuredtext'
 
-from zope.interface import implementer
-
-from zope.formlib.interfaces import IInputWidget
-from zope.formlib.widgets import TextAreaWidget
-from zope.formlib.widget import renderElement, escape
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
+from zope.formlib.interfaces import IInputWidget
+from zope.formlib.widget import escape
+from zope.formlib.widget import renderElement
+from zope.formlib.widgets import TextAreaWidget
+from zope.interface import implementer
 
 
 @implementer(IInputWidget)
@@ -103,7 +103,7 @@ class SimpleEditingWidget(TextAreaWidget):
     def _toFieldValue(self, value):
         if self.context.min_length and not value:  # pragma: no cover
             return None
-        return super(SimpleEditingWidget, self)._toFieldValue(value)
+        return super()._toFieldValue(value)
 
     def __call__(self):
         return renderElement("textarea",

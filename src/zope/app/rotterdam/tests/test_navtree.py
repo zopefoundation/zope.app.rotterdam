@@ -24,24 +24,24 @@ class TestNavTree(BrowserTestCase):
     def test_navtree(self):
         # Add some folders
         response = self.publish("/+/action.html", basic='mgr:mgrpw',
-                                form={'type_name': u'zope.app.content.Folder',
-                                      'id': u'First'})
+                                form={'type_name': 'zope.app.content.Folder',
+                                      'id': 'First'})
         self.assertEqual(response.status_int, 302)
         response = self.publish("/+/action.html", basic='mgr:mgrpw',
-                                form={'type_name': u'zope.app.content.Folder',
-                                      'id': u'S&econd'})
+                                form={'type_name': 'zope.app.content.Folder',
+                                      'id': 'S&econd'})
         self.assertEqual(response.status_int, 302)
         response = self.publish("/+/action.html", basic='mgr:mgrpw',
-                                form={'type_name': u'zope.app.content.Folder',
-                                      'id': u'Third'})
+                                form={'type_name': 'zope.app.content.Folder',
+                                      'id': 'Third'})
         self.assertEqual(response.status_int, 302)
         response = self.publish("/First/+/action.html", basic='mgr:mgrpw',
-                                form={'type_name': u'zope.app.content.Folder',
-                                      'id': u'Firsts"Folder'})
+                                form={'type_name': 'zope.app.content.Folder',
+                                      'id': 'Firsts"Folder'})
         self.assertEqual(response.status_int, 302)
         response = self.publish("/First/+/action.html", basic='mgr:mgrpw',
-                                form={'type_name': u'zope.app.content.Folder',
-                                      'id': u'somesite'})
+                                form={'type_name': 'zope.app.content.Folder',
+                                      'id': 'somesite'})
         self.assertEqual(response.status_int, 302)
 
         # add a site manager This will break when site adding is fixed
@@ -68,8 +68,8 @@ class TestNavTree(BrowserTestCase):
         minidom.parseString(response.body)
 
         response = self.publish("/First/+/action.html", basic='mgr:mgrpw',
-                                form={'type_name': u'zope.app.content.Folder',
-                                      'id': u'Firsts2ndFolder'})
+                                form={'type_name': 'zope.app.content.Folder',
+                                      'id': 'Firsts2ndFolder'})
         self.assertEqual(response.status_int, 302)
 
 
