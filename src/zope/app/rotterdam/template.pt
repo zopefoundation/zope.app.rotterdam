@@ -122,7 +122,7 @@
       <!-- note, we reverse the actions list 'cos they're packed to the
            screen from the right -->
       <div tal:condition="python: macroname == 'view'" id="actions">
-        <span 
+        <span
             tal:condition="actions"
             tal:define="
                help_actions context/@@view_get_menu/help_actions|nothing;
