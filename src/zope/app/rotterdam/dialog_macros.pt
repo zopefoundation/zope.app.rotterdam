@@ -3,7 +3,7 @@
 <html
   xmlns="http://www.w3.org/1999/xhtml"
   xml:lang="en"
-  lang="en" 
+  lang="en"
   i18n:domain="zope">
 
   <head>
@@ -11,7 +11,7 @@
     <title metal:define-slot="title" i18n:translate="">Z3 UI</title>
 
 
-    <style type="text/css" 
+    <style type="text/css"
            media="all"
            tal:content=
            "string: @import url(${context/++resource++zope3.css});"
@@ -24,7 +24,7 @@
     <metal:block define-slot="ecmascript_slot" />
 
     <!--
-    <script type="text/javascript" src="xmltree.js" 
+    <script type="text/javascript" src="xmltree.js"
             tal:attributes="src string:${context/++resource++xmltree.js}"
             ></script>
     -->
@@ -38,7 +38,7 @@
                     "
         tal:attributes="
           onload string:loadtree('${rooturl}/', '${thisbaseurl}/');
-          " 
+          "
         >
 
     <div id="global">
@@ -68,11 +68,11 @@
 
         <h4 i18n:translate="">Navigation</h4>
 
-        <div 
+        <div
           xmlns="http://www.zope.org/zope3xmltree"
-          id="navtreecontents" 
-          class="body" 
-          onclick="treeclicked(event);" 
+          id="navtreecontents"
+          class="body"
+          onclick="treeclicked(event);"
           onmouseover="mouseOverTree(event);"
           onmouseout="mouseOutTree(event);"
           >
@@ -142,7 +142,7 @@
           <div class="content odd">
 
             <metal:block define-slot="pagetip" tal:replace="pagetip">
-              A short tip goes here              
+              A short tip goes here
             </metal:block>
 
           </div>
@@ -170,5 +170,3 @@
 </html>
 
 </metal:block>
-
-

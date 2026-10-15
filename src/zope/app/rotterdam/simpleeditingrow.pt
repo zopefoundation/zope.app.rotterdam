@@ -21,13 +21,13 @@ function getKeyPress(e) {
 
 }
 </script>
-<label for="source-text" tal:attributes="for view/name" 
+<label for="source-text" tal:attributes="for view/name"
        tal:content="view/title"
        i18n:translate="">Some Source</label>
 <div class="field">
 
 
-  <textarea style="width: 95%" rows="15" 
+  <textarea style="width: 95%" rows="15"
             tal:attributes="id view/name; name view/name"
             tal:content="view/contents">Some editing text here.</textarea>
 </div>
